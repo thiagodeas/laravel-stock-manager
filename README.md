@@ -1,52 +1,52 @@
+# Laravel Stock Manager
 
-# Setup Docker Laravel 11 com PHP 8.3
-[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
+**Laravel Stock Manager** is an inventory management system built with Laravel 11 and PHP 8.3. It allows you to manage products, categories, stock entries, stock exits, and generate reports based on these transactions. The system uses a MySQL database to store all the necessary information about products and their movements.
 
-### Passo a passo
-Clone Repositório
-```sh
-git clone -b laravel-11-with-php-8.3 https://github.com/especializati/setup-docker-laravel.git app-laravel
+This project is containerized with Docker to ensure easy setup and development. It includes all the dependencies needed to run the Laravel application.y.
+
+## 🚀 Project Setup
+
+This project uses the Docker template from [especializati/setup-docker-laravel](https://github.com/thiagodeas/setup-docker-laravel) with Laravel 11 and PHP 8.3.
+
+### Clone the repository
+
+```bash
+git clone https://github.com/thiagodeas/laravel-stock-manager.git laravel-stock-manager
+cd laravel-stock-manager
 ```
-```sh
-cd app-laravel
-```
 
-Suba os containers do projeto
-```sh
+### Start Docker containers
+
+```bash
 docker-compose up -d
 ```
+### Create .env file
 
-
-Crie o Arquivo .env
-```sh
+```bash
 cp .env.example .env
 ```
 
-Acesse o container app
-```sh
+### Access the app container
+
+```bash
 docker-compose exec app bash
 ```
 
+### Install dependencies
 
-Instale as dependências do projeto
-```sh
+```bash
 composer install
 ```
 
-Gere a key do projeto Laravel
-```sh
+### Generate Laravel App key
+
+```bash
 php artisan key:generate
 ```
 
-OPCIONAL: Gere o banco SQLite (caso não use o banco MySQL)
-```sh
-touch database/database.sqlite
-```
+### Run migrations
 
-Rodar as migrations
-```sh
+```bash
 php artisan migrate
 ```
-
-Acesse o projeto
-[http://localhost:8000](http://localhost:8000)
+ Access the project http://localhost:8000/
