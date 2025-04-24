@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Product;
 
 use App\Models\Product;
 use App\Repositories\ProductRepositoryInterface;
@@ -73,6 +73,7 @@ class ProductService
         if(!$product) {
             throw new ModelNotFoundException('Product not found.');
         }
+        
         return $this->productRepository->delete($id);
     }
 }
