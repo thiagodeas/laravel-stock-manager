@@ -3,11 +3,12 @@
 namespace App\Services\Entry;
 
 use App\Models\Entry;
-use App\Repositories\EntryRepositoryInterface;
+use App\Repositories\Entry\EntryRepositoryInterface;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
 
 class EntryService
 {
@@ -24,13 +25,18 @@ class EntryService
 
     public function createEntry(array $data): Entry
     {
-        $product = $this->productRepository->findById($data['product_id']);
+        return DB::transaction(function () use ($data) {
+            $product = $this->productRepository->findById($data['product_id']);
 
-        if (!$product) {
+            if (!$product) {
             throw new InvalidArgumentException('Product not found.');
-        }
+            }
 
-        return $this->entryRepository->create($data);
+            $product->quantity += $data['quantity'];
+            $product->save();
+
+            return $this->entryRepository->create($data);
+        });
     }
 
     public function getAllEntries(): Collection
@@ -47,16 +53,5 @@ class EntryService
         }
 
         return $entry;
-    }
-
-    public function delete($id): bool
-    {
-        $entry = $this->entryRepository->getById($id);
-
-        if (!$entry) {
-            throw new ModelNotFoundException('Entry not found.');
-        }
-
-        return $this->entryRepository->delete($id);
     }
 }
