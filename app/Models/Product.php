@@ -24,6 +24,8 @@ class Product extends Model
             } else {
                 $product->id = '8100';
             }
+
+            $product->quantity = 0;
         });
     }
 
