@@ -29,7 +29,7 @@ class EntryService
             $product = $this->productRepository->findById($data['product_id']);
 
             if (!$product) {
-            throw new InvalidArgumentException('Product not found.');
+            throw new ModelNotFoundException('Product not found.');
             }
 
             $product->quantity += $data['quantity'];
@@ -44,7 +44,7 @@ class EntryService
         return $this->entryRepository->getAll();
     }
 
-    public function getById($id): ?Entry
+    public function getEntryById($id): ?Entry
     {
         $entry = $this->entryRepository->getById($id);
 
