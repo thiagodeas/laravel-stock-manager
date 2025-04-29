@@ -5,6 +5,7 @@ namespace App\Services\Output;
 use App\Models\Output;
 use App\Repositories\Output\OutputRepositoryInterface;
 use App\Repositories\ProductRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -57,5 +58,18 @@ class OutputService
         }
 
         return $output;
+    }
+
+    public function getOutputsByProductId(string $productId): Collection
+    {
+        return $this->outputRepository->getByProductId($productId);
+    }
+
+    public function getOutputsByDateRange(string $startDate, string $endDate): Collection
+    {
+        $startDate = Carbon::parse($startDate)->startOfDay();
+        $endDate = Carbon::parse($endDate)->endOfDay();
+         
+        return $this->outputRepository->getByDateRange($startDate, $endDate);
     }
 }

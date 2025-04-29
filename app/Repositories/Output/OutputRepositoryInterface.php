@@ -10,4 +10,6 @@ interface OutputRepositoryInterface
     public function create(array $data): Output; 
     public function getAll(): Collection;
     public function getById(int $id): ?Output;
+    public function getByProductId(string $productId): Collection;
+    public function getByDateRange(string $startDate, string $endDate): Collection;
 }

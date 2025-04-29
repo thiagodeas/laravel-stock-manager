@@ -21,4 +21,14 @@ class OutputRepository implements OutputRepositoryInterface
     {
         return Output::with('product')->find($id);
     }
+
+    public function getByProductId(string $productId): Collection
+    {
+        return Output::where('product_id', $productId)->get();
+    }
+
+    public function getByDateRange(string $startDate, string $endDate): Collection
+    {
+        return Output::whereBetween('output_date', [$startDate, $endDate])->get();
+    }
 }
