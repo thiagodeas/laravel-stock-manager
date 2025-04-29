@@ -67,8 +67,8 @@ class OutputService
 
     public function getOutputsByDateRange(string $startDate, string $endDate): Collection
     {
-        $startDate = Carbon::parse($startDate)->startOfDay();
-        $endDate = Carbon::parse($endDate)->endOfDay();
+        $startDate = Carbon::createFromFormat('d/m/Y',$startDate)->startOfDay();
+        $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
          
         return $this->outputRepository->getByDateRange($startDate, $endDate);
     }

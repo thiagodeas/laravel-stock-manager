@@ -63,8 +63,8 @@ class EntryService
 
     public function getEntriesByDateRange(string $startDate, string $endDate): Collection
     {
-        $startDate = Carbon::parse($startDate)->startOfDay();
-        $endDate = Carbon::parse($endDate)->endOfDay();
+        $startDate = Carbon::createFromFormat('d/m/Y',$startDate)->startOfDay();
+        $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
 
         return $this->entryRepository->getByDateRange($startDate, $endDate);
     }
