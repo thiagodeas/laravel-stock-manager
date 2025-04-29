@@ -3,7 +3,6 @@
 namespace App\Repositories\Entry;
 
 use App\Models\Entry;
-use App\Repositories\EntryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class EntryRepository implements EntryRepositoryInterface
@@ -21,15 +20,5 @@ class EntryRepository implements EntryRepositoryInterface
     public function getById($id): ?Entry
     {
         return Entry::with('product')->find($id);
-    }
-
-    public function delete($id): bool
-    {
-        $entry = Entry::find($id);
-        if ($entry) {
-            return $entry->delete();
-        }
-
-        return false;
     }
 }
