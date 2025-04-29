@@ -10,4 +10,6 @@ interface EntryRepositoryInterface
     public function create(array $data): Entry;
     public function getAll(): Collection;
     public function getById(string $id): ?Entry;
+    public function getByProductId(string $productId): Collection;
+    public function getByDateRange(string $startDate, string $endDate): Collection;
 }   

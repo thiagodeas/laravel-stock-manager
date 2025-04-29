@@ -5,6 +5,7 @@ namespace App\Services\Entry;
 use App\Models\Entry;
 use App\Repositories\Entry\EntryRepositoryInterface;
 use App\Repositories\ProductRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
@@ -53,5 +54,18 @@ class EntryService
         }
 
         return $entry;
+    }
+
+    public function getEntriesByProductId(string $productId): Collection
+    {
+        return $this->entryRepository->getByProductId($productId);
+    }
+
+    public function getEntriesByDateRange(string $startDate, string $endDate): Collection
+    {
+        $startDate = Carbon::parse($startDate)->startOfDay();
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
+        return $this->entryRepository->getByDateRange($startDate, $endDate);
     }
 }
