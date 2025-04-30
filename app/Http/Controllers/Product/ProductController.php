@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Product;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Services\ProductService;
+use App\Services\Product\ProductService;
 use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
@@ -16,19 +17,19 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
+    public function getAll(): JsonResponse
+    {
+        $products = $this->productService->getAllProducts();
+
+        return response()->json($products);
+    }
+
     public function create(CreateProductRequest $request): JsonResponse
     {
         $data = $request->validated();
         $product = $this->productService->createProduct($data);
 
         return response()->json($product, 201);
-    }
-
-    public function getAll(): JsonResponse
-    {
-        $products = $this->productService->getAllProducts();
-
-        return response()->json($products);
     }
 
     public function getById(string $id): JsonResponse 
