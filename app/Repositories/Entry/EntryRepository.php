@@ -3,6 +3,7 @@
 namespace App\Repositories\Entry;
 
 use App\Models\Entry;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class EntryRepository implements EntryRepositoryInterface
@@ -17,7 +18,7 @@ class EntryRepository implements EntryRepositoryInterface
         return Entry::with('product')->get();
     }
 
-    public function getById($id): ?Entry
+    public function getById($id): Entry
     {
         return Entry::with('product')->find($id);
     }
@@ -27,7 +28,7 @@ class EntryRepository implements EntryRepositoryInterface
         return Entry::where('product_id', $productId)->get();
     }
 
-    public function getByDateRange(string $startDate, string $endDate): Collection
+    public function getByDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): Collection
     {
         return Entry::whereBetween('entry_date', [$startDate, $endDate])->get();
     }
