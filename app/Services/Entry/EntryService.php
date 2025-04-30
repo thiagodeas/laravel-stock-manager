@@ -8,7 +8,6 @@ use App\Repositories\ProductRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
 
 class EntryService
@@ -45,7 +44,7 @@ class EntryService
         return $this->entryRepository->getAll();
     }
 
-    public function getEntryById($id): ?Entry
+    public function getEntryById($id): Entry
     {
         $entry = $this->entryRepository->getById($id);
 
@@ -61,11 +60,8 @@ class EntryService
         return $this->entryRepository->getByProductId($productId);
     }
 
-    public function getEntriesByDateRange(string $startDate, string $endDate): Collection
+    public function getEntriesByDateRange(Carbon $startDate, Carbon $endDate): Collection
     {
-        $startDate = Carbon::createFromFormat('d/m/Y',$startDate)->startOfDay();
-        $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
-
         return $this->entryRepository->getByDateRange($startDate, $endDate);
     }
 }
