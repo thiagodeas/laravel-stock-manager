@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Entry;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Entry\CreateEntryRequest;
-use App\Http\Requests\Entry\GetEntriesByDateRangeRequest;
+use App\Http\Requests\Entry\GetByDateRangeRequest;
 use App\Services\Entry\EntryService;
 use Illuminate\Http\JsonResponse;
 
@@ -46,7 +46,7 @@ class EntryController extends Controller
         return response()->json($entries);
     }
 
-    public function getByDateRange(GetEntriesByDateRangeRequest $request): JsonResponse
+    public function getByDateRange(GetByDateRangeRequest $request): JsonResponse
     {
         $data = $request->validated();
         $entries = $this->entryService->getEntriesByDateRange($data['start_date'], $data['end_date']);
