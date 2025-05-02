@@ -3,6 +3,7 @@
 namespace App\Repositories\Output;
 
 use App\Models\Output;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class OutputRepository implements OutputRepositoryInterface
@@ -17,7 +18,7 @@ class OutputRepository implements OutputRepositoryInterface
         return Output::with('product')->get();
     }
 
-    public function getById(int $id): ?Output
+    public function getById(string $id): Output
     {
         return Output::with('product')->find($id);
     }
@@ -27,7 +28,7 @@ class OutputRepository implements OutputRepositoryInterface
         return Output::where('product_id', $productId)->get();
     }
 
-    public function getByDateRange(string $startDate, string $endDate): Collection
+    public function getByDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): Collection
     {
         return Output::whereBetween('output_date', [$startDate, $endDate])->get();
     }
