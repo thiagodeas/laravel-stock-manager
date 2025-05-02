@@ -49,7 +49,7 @@ class OutputService
         return $this->outputRepository->getAll();
     }
 
-    public function getOutputById($id): ?Output
+    public function getOutputById($id): Output
     {
         $output = $this->outputRepository->getById($id);
 
@@ -65,11 +65,8 @@ class OutputService
         return $this->outputRepository->getByProductId($productId);
     }
 
-    public function getOutputsByDateRange(string $startDate, string $endDate): Collection
-    {
-        $startDate = Carbon::createFromFormat('d/m/Y',$startDate)->startOfDay();
-        $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
-         
+    public function getOutputsByDateRange(Carbon $startDate, Carbon $endDate): Collection
+    {   
         return $this->outputRepository->getByDateRange($startDate, $endDate);
     }
 }
