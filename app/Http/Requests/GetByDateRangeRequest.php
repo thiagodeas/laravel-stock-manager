@@ -5,7 +5,7 @@ namespace App\Http\Requests\Entry;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetEntriesByDateRangeRequest extends FormRequest
+class GetByDateRangeRequest extends FormRequest
 {
     public function authorize(): bool
     {
