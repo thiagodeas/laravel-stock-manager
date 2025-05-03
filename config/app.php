@@ -99,12 +99,6 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'previous_keys' => [
-        ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
-        ),
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
@@ -139,6 +133,9 @@ return [
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ],
 
@@ -149,6 +146,7 @@ return [
         'Cache' => Illuminate\Support\Facades\Cache::class,
         'DB' => Illuminate\Support\Facades\DB::class,
         'Route' => Illuminate\Support\Facades\Route::class,
+        'Encrypter'=> Illuminate\Support\Facades\Crypt::class,
     ],
 
 ];
