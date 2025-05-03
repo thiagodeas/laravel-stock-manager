@@ -49,7 +49,7 @@ class OutputController extends Controller
     public function getByDateRange(GetByDateRangeRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $outputs = $this->outputService->getOutputsByDateRange($data['start_date'], $data['end_Date']);
+        $outputs = $this->outputService->getOutputsByDateRange($data['start_date'], $data['end_date']);
 
         return response()->json($outputs);
     }
