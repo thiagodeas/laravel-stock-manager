@@ -3,7 +3,7 @@
 namespace App\Repositories\Product;
 
 use App\Models\Product;
-use App\Repositories\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProductRepository implements ProductRepositoryInterface
