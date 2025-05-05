@@ -4,7 +4,7 @@ namespace App\Services\Output;
 
 use App\Models\Output;
 use App\Repositories\Output\OutputRepositoryInterface;
-use App\Repositories\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
