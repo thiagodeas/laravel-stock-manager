@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\GetCategoryByNameRequest;
 use App\Services\Category\CategoryService;
 use Illuminate\Http\JsonResponse;
@@ -16,9 +17,9 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function create(array $data): JsonResponse
+    public function create(CreateCategoryRequest $request): JsonResponse
     {
-        $product = $this->categoryService->createCategory($data);
+        $product = $this->categoryService->createCategory($request->validated());
 
         return response()->json($product, 201);
     }
