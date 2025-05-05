@@ -40,6 +40,8 @@ class OutputService
             $product->quantity -= $data['quantity'];
             $product->save();
 
+            $data['output_date'] = Carbon::today()->toDateString();
+
             return $this->outputRepository->create($data);
         });
     }

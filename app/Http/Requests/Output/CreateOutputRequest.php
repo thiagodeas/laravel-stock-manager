@@ -17,7 +17,6 @@ class CreateOutputRequest extends FormRequest
             'product_id' => 'required|string|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'reason' => 'required|string',
-            'output_date' => 'required|date',
         ];
     }
 }
