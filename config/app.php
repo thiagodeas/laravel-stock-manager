@@ -137,6 +137,7 @@ return [
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
     ],
 
     'aliases' => [
