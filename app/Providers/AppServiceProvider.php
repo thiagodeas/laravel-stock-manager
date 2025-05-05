@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Entry\EntryRepository;
 use App\Repositories\Entry\EntryRepositoryInterface;
 use App\Repositories\Output\OutputRepository;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(EntryRepositoryInterface::class, EntryRepository::class);
         $this->app->bind(OutputRepositoryInterface::class, OutputRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
     }
 
     public function boot(): void
