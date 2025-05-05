@@ -35,6 +35,8 @@ class EntryService
             $product->quantity += $data['quantity'];
             $product->save();
 
+            $data['entry_date'] = Carbon::today()->toDateString();
+
             return $this->entryRepository->create($data);
         });
     }

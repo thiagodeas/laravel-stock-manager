@@ -17,7 +17,6 @@ class CreateEntryRequest extends FormRequest
             'product_id' => 'required|string|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'reason' => 'required|string',
-            'entry_date' => 'required|date',
         ];
     }
 }
