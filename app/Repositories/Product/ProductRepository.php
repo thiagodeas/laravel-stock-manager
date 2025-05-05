@@ -23,7 +23,7 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::find($id);
     }
 
-    public function findByName(string $name): Product
+    public function findByName(string $name): ?Product
     {
         return Product::where('name', $name)->first();
     }
