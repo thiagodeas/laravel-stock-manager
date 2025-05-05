@@ -7,7 +7,7 @@ use App\Repositories\Entry\EntryRepositoryInterface;
 use App\Repositories\Output\OutputRepository;
 use App\Repositories\Output\OutputRepositoryInterface;
 use App\Repositories\Product\ProductRepository;
-use App\Repositories\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

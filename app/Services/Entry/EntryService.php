@@ -4,7 +4,7 @@ namespace App\Services\Entry;
 
 use App\Models\Entry;
 use App\Repositories\Entry\EntryRepositoryInterface;
-use App\Repositories\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -3,7 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
-use App\Repositories\ProductRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
