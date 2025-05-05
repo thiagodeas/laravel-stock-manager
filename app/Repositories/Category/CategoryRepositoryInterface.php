@@ -10,6 +10,6 @@ interface CategoryRepositoryInterface
     public function create(array $data): Category;
     public function getAll(): Collection;
     public function getById(string $id): Category;
-    public function getByName(string $name): Category;
+    public function getByName(string $name): ?Category;
     public function delete(string $id): bool;
 }

@@ -24,7 +24,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         return Category::find($id);
     }
 
-    public function getByName(string $name): Category
+    public function getByName(string $name): ?Category
     {
         return Category::where('name', $name)->first();
     }
