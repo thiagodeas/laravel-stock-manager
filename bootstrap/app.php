@@ -2,6 +2,8 @@
 
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryAlreadyExistsException;
+use App\Exceptions\Product\ProductAlreadyExistsException;
+use App\Exceptions\Product\ProductNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,6 +25,18 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->renderable(function (CategoryAlreadyExistsException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (ProductAlreadyExistsException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (ProductNotFoundException $e, $request) {
             return response()->json([
                 'error'=> $e->getMessage(),
             ], $e->getCode());
