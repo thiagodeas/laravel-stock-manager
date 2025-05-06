@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Entry;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateEntryRequest extends FormRequest
 {
@@ -16,7 +17,11 @@ class CreateEntryRequest extends FormRequest
         return [
             'product_id' => 'required|string|exists:products,id',
             'quantity' => 'required|integer|min:1',
-            'reason' => 'required|string',
+            'reason' => [
+                'required',
+                'string',
+                Rule::in(['Compra', 'Devolução de Venda', 'Ajuste', 'Troca', 'Doação/Bonificação']),
+            ],
         ];
     }
 }
