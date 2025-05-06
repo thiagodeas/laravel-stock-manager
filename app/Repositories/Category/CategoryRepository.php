@@ -19,7 +19,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         return Category::all();
     }
 
-    public function getById(string $id): Category
+    public function getById(string $id): ?Category
     {
         return Category::find($id);
     }
