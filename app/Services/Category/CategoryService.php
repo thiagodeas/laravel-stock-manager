@@ -3,11 +3,10 @@
 namespace App\Services\Category;
 
 use App\Exceptions\Category\CategoryNotFoundException;
+use App\Exceptions\Category\CategoryAlreadyExistsException;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
 
 class CategoryService 
 {
@@ -23,7 +22,7 @@ class CategoryService
         $existingCategory = $this->categoryRepository->getByName($data['name']);
 
         if($existingCategory) {
-            throw new InvalidArgumentException('The category already exists.');
+            throw new CategoryAlreadyExistsException();
         }
 
         return $this->categoryRepository->create($data);
@@ -50,7 +49,7 @@ class CategoryService
         $category = $this->categoryRepository->getByName($name);
 
         if (!$category) {
-            throw new ModelNotFoundException('Category not found');
+            throw new CategoryNotFoundException();
         }
 
         return $category;
@@ -61,7 +60,7 @@ class CategoryService
         $category = $this->categoryRepository->getById($id);
 
         if (!$category) {
-            throw new ModelNotFoundException('Category not found.');
+            throw new CategoryNotFoundException();
         }
 
         return $this->categoryRepository->delete($id);
