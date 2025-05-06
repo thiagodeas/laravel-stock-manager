@@ -2,6 +2,7 @@
 
 namespace App\Services\Category;
 
+use App\Exceptions\Category\CategoryNotFoundException;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,7 +39,7 @@ class CategoryService
         $category = $this->categoryRepository->getById($id);
 
         if (!$category) {
-            throw new ModelNotFoundException('Category not found');
+            throw new CategoryNotFoundException();
         }
 
         return $category;
