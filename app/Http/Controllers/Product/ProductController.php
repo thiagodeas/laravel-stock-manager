@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Requests\Product\GetProductByNameRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Services\Product\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,14 @@ class ProductController extends Controller
     public function getById(string $id): JsonResponse 
     {
         $product = $this->productService->findProductById($id);
+
+        return response()->json($product);
+    }
+
+    public function getByName(GetProductByNameRequest $request): JsonResponse
+    {
+        $name = $request->query('name');
+        $product = $this->productService->findProductByName($name);
 
         return response()->json($product);
     }

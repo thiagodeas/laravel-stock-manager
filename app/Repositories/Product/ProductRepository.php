@@ -18,7 +18,7 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::all();
     }
 
-    public function findById(string $id): Product
+    public function findById(string $id): ?Product
     {
         return Product::find($id);
     }
@@ -28,25 +28,24 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::where('name', $name)->first();
     }
 
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): ?Product
     {
         $product = $this->findById($id);
 
         if ($product) {
-            return $product->update($data);
+            $product->update($data);
+            return $product;
         }
 
-        return false;
+        return null;
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
         $product = $this->findById($id);
 
         if($product) {
-            return $product->delete();
+            $product->delete();
         }
-
-        return false;
     }
 }

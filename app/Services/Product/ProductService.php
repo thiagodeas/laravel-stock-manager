@@ -2,11 +2,12 @@
 
 namespace App\Services\Product;
 
+use App\Exceptions\Product\ProductAlreadyExistsException;
+use App\Exceptions\Product\ProductNotFoundException;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
 
 class ProductService
 {
@@ -22,7 +23,7 @@ class ProductService
         $existingProduct = $this->productRepository->findByName($data['name']);
 
         if($existingProduct) {
-            throw new InvalidArgumentException('The product already exists.');
+            throw new ProductAlreadyExistsException();
         }
 
         return $this->productRepository->create($data);
@@ -38,7 +39,7 @@ class ProductService
         $product = $this->productRepository->findById($id);
 
         if (!$product) {
-            throw new ModelNotFoundException('Product not found.');
+            throw new ProductNotFoundException();
         }
 
         return $product;
@@ -49,31 +50,31 @@ class ProductService
         $product = $this->productRepository->findByName($name);
 
         if(!$product) {
-            throw new ModelNotFoundException('Product not found.');
+            throw new ProductNotFoundException();
         }
 
         return $product;
     }
 
-    public function updateProduct(string $id, array $data): bool
+    public function updateProduct(string $id, array $data): ?Product
     {
         $product = $this->productRepository->findById($id);
 
         if (!$product) {
-            throw new ModelNotFoundException('Product not found.');
+            throw new ProductNotFoundException();
         }
 
         return $this->productRepository->update($id, $data);
     }
 
-    public function deleteProduct(string $id): bool 
+    public function deleteProduct(string $id): void 
     {
         $product = $this->productRepository->findById($id);
 
         if(!$product) {
-            throw new ModelNotFoundException('Product not found.');
+            throw new ProductNotFoundException();
         }
         
-        return $this->productRepository->delete($id);
+        $this->productRepository->delete($id);
     }
 }
