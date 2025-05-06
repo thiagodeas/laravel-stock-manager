@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'getAll']);
     Route::post('/', [CategoryController::class, 'create']);
-    Route::get('/{id}', [CategoryController::class, 'getById']);
     Route::get('/filter', [CategoryController::class, 'getByName']);
+    Route::get('/{id}', [CategoryController::class, 'getById']);
     Route::delete('/{id}', [CategoryController::class, 'delete']);
 });
 
@@ -25,15 +25,15 @@ Route::prefix('products')->group(function () {
 Route::prefix('entries')->group(function () {
     Route::get('/', [EntryController::class, 'getAll']);
     Route::post('/', [EntryController::class, 'create']);
+    Route::get('/filter', [EntryController::class, 'getByDateRange']);
     Route::get('/{id}', [EntryController::class, 'getById']);
     Route::get('/product/{id}', [EntryController::class, 'getByProductId']);
-    Route::get('/filter', [EntryController::class, 'getByDateRange']);
 });
 
 Route::prefix('outputs')->group(function () {
     Route::get('/', [OutputController::class, 'getAll']);
     Route::post('/', [OutputController::class, 'create']);
+    Route::get('/filter', [OutputController::class, 'getByDateRange']);
     Route::get('/{id}', [OutputController::class, 'getById']);
     Route::get('/product/{id}', [OutputController::class, 'getByProductId']);
-    Route::get('/filter', [OutputController::class, 'getByDateRange']);
 });
