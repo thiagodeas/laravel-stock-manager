@@ -2,14 +2,16 @@
 
 namespace App\Services\Output;
 
+use App\Exceptions\InvalidDateRangeException;
+use App\Exceptions\Output\OutputNotFoundException;
+use App\Exceptions\Product\InsufficientStockException;
+use App\Exceptions\Product\ProductNotFoundException;
 use App\Models\Output;
 use App\Repositories\Output\OutputRepositoryInterface;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 
 class OutputService
 {
@@ -30,11 +32,11 @@ class OutputService
             $product = $this->productRepository->findById($data['product_id']);
 
             if (!$product) {
-                throw new ModelNotFoundException('Product not found');
+                throw new ProductNotFoundException();
             }
 
             if ($product->quantity < $data['quantity']) {
-                throw new InvalidArgumentException('Insufficient product quantity in stock');
+                throw new InsufficientStockException();
             }
 
             $product->quantity -= $data['quantity'];
@@ -51,12 +53,12 @@ class OutputService
         return $this->outputRepository->getAll();
     }
 
-    public function getOutputById($id): Output
+    public function getOutputById($id): ?Output
     {
         $output = $this->outputRepository->getById($id);
 
         if(!$output) {
-            throw new ModelNotFoundException('Output not found');
+            throw new OutputNotFoundException();
         }
 
         return $output;
@@ -64,11 +66,21 @@ class OutputService
 
     public function getOutputsByProductId(string $productId): Collection
     {
-        return $this->outputRepository->getByProductId($productId);
+        $outputs = $this->outputRepository->getByProductId($productId);
+
+        if($outputs->isEmpty()) {
+            throw new ProductNotFoundException();
+        }
+
+        return $outputs;
     }
 
-    public function getOutputsByDateRange(Carbon $startDate, Carbon $endDate): Collection
+    public function getOutputsByDateRange(?Carbon $startDate, ?Carbon $endDate): Collection
     {   
+        if(!$startDate || !$endDate) {
+            throw new InvalidDateRangeException();
+        }
+
         return $this->outputRepository->getByDateRange($startDate, $endDate);
     }
 }

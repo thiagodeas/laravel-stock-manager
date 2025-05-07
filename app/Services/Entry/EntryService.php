@@ -3,7 +3,7 @@
 namespace App\Services\Entry;
 
 use App\Exceptions\Entry\EntryNotFoundException;
-use App\Exceptions\Entry\InvalidDateRangeException;
+use App\Exceptions\InvalidDateRangeException;
 use App\Exceptions\Product\ProductNotFoundException;
 use App\Models\Entry;
 use App\Repositories\Entry\EntryRepositoryInterface;
