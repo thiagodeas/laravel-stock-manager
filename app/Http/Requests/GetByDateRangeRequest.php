@@ -15,23 +15,39 @@ class GetByDateRangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date'
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date'
         ];
     }
 
-    public function prepareForValidation():void
+    public function prepareForValidation(): void
     {
-        if ($this->has('start_date')) {
-            $this->merge([
-                'start_date' => Carbon::createFromFormat('d/m/Y', $this->input('start_date'))->startOfDay(),
-            ]);
+        $startDate = $this->safeDate('start_date');
+        $endDate = $this->safeDate('end_date');
+
+        if ($startDate && $endDate) {
+            $startDate->setTime(0, 0, 0); 
+            $endDate->setTime(23, 59, 59);
         }
 
-        if ($this->has('end_date')) {
-            $this->merge([
-                'end_date' => Carbon::createFromFormat('d/m/Y', $this->input('end_date'))->endOfDay(),
-            ]);
+        $this->merge([
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ]);
+    }
+
+    private function safeDate(?string $key): ?Carbon
+    {
+        $value = $this->input($key);
+
+        if (empty($value)) {
+            return null;
+        }
+
+        try {
+            return Carbon::createFromFormat('d/m/Y', $value);
+        } catch (\Exception $e) {
+            return null;
         }
     }
 }

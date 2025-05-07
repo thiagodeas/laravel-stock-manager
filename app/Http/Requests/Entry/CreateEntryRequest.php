@@ -15,7 +15,7 @@ class CreateEntryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|string|exists:products,id',
+            'product_id' => 'required|string',
             'quantity' => 'required|integer|min:1',
             'reason' => [
                 'required',

@@ -2,12 +2,14 @@
 
 namespace App\Services\Entry;
 
+use App\Exceptions\Entry\EntryNotFoundException;
+use App\Exceptions\Entry\InvalidDateRangeException;
+use App\Exceptions\Product\ProductNotFoundException;
 use App\Models\Entry;
 use App\Repositories\Entry\EntryRepositoryInterface;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class EntryService
@@ -29,7 +31,7 @@ class EntryService
             $product = $this->productRepository->findById($data['product_id']);
 
             if (!$product) {
-            throw new ModelNotFoundException('Product not found.');
+            throw new ProductNotFoundException();
             }
 
             $product->quantity += $data['quantity'];
@@ -46,12 +48,12 @@ class EntryService
         return $this->entryRepository->getAll();
     }
 
-    public function getEntryById($id): Entry
+    public function getEntryById($id): ?Entry
     {
         $entry = $this->entryRepository->getById($id);
 
         if (!$entry) {
-            throw new ModelNotFoundException('Entry not found.');
+            throw new EntryNotFoundException();
         }
 
         return $entry;
@@ -59,11 +61,21 @@ class EntryService
 
     public function getEntriesByProductId(string $productId): Collection
     {
-        return $this->entryRepository->getByProductId($productId);
+        $entries = $this->entryRepository->getByProductId($productId);
+
+        if ($entries->isEmpty()) {
+            throw new ProductNotFoundException();
+        }
+
+        return $entries;
     }
 
-    public function getEntriesByDateRange(Carbon $startDate, Carbon $endDate): Collection
+    public function getEntriesByDateRange(?Carbon $startDate, ?Carbon $endDate): Collection
     {
+        if (!$startDate || !$endDate) {
+            throw new InvalidDateRangeException(); 
+        }
+
         return $this->entryRepository->getByDateRange($startDate, $endDate);
     }
 }

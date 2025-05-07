@@ -18,7 +18,7 @@ class EntryRepository implements EntryRepositoryInterface
         return Entry::with('product')->get();
     }
 
-    public function getById($id): Entry
+    public function getById($id): ?Entry
     {
         return Entry::with('product')->find($id);
     }
@@ -28,7 +28,7 @@ class EntryRepository implements EntryRepositoryInterface
         return Entry::where('product_id', $productId)->get();
     }
 
-    public function getByDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): Collection
+    public function getByDateRange(?DateTimeInterface $startDate, ?DateTimeInterface $endDate): Collection
     {
         return Entry::whereBetween('entry_date', [$startDate, $endDate])->get();
     }
