@@ -2,7 +2,7 @@
 
 **Laravel Stock Manager** is an inventory management system built with Laravel 11 and PHP 8.3. It allows you to manage products, categories, stock entries, stock exits, and generate reports based on these transactions. The system uses a MySQL database to store all the necessary information about products and their movements.
 
-This project is containerized with Docker to ensure easy setup and development. It includes all the dependencies needed to run the Laravel application.y.
+This project is containerized with Docker to ensure easy setup and development. It includes all the dependencies needed to run the Laravel application.
 
 ## 🚀 Project Setup
 
