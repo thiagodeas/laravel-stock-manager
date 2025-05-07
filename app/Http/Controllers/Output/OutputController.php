@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Output;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Entry\GetByDateRangeRequest;
+use App\Http\Requests\GetByDateRangeRequest;
 use App\Http\Requests\Output\CreateOutputRequest;
 use App\Services\Output\OutputService;
 use Illuminate\Http\JsonResponse;
