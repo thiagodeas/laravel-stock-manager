@@ -3,7 +3,9 @@
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryAlreadyExistsException;
 use App\Exceptions\Entry\EntryNotFoundException;
-use App\Exceptions\Entry\InvalidDateRangeException;
+use App\Exceptions\InvalidDateRangeException;
+use App\Exceptions\Output\OutputNotFoundException;
+use App\Exceptions\Product\InsufficientStockException;
 use App\Exceptions\Product\ProductAlreadyExistsException;
 use App\Exceptions\Product\ProductNotFoundException;
 use Illuminate\Foundation\Application;
@@ -51,6 +53,18 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->renderable(function (InvalidDateRangeException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (InsufficientStockException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (OutputNotFoundException $e, $request) {
             return response()->json([
                 'error'=> $e->getMessage(),
             ], $e->getCode());
