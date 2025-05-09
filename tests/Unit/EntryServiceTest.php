@@ -41,7 +41,7 @@ class EntryServiceTest extends TestCase
             'quantity' => 10,
         ];
 
-        $product = Mockery::mock(Product::class);
+        $product = Mockery::mock(Product::class)->makePartial();
         $product->shouldReceive('save')->once();
         $product->quantity = 0;
 
@@ -82,6 +82,10 @@ class EntryServiceTest extends TestCase
             ->with($data['product_id'])
             ->andReturn(null);
 
+        DB::shouldReceive('transaction')->andReturnUsing(function ($callback) {
+            return $callback();
+        });
+        
         $this->entryService->createEntry($data);
     }
 
