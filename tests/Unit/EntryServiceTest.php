@@ -66,6 +66,7 @@ class EntryServiceTest extends TestCase
         $entry = $this->entryService->createEntry($data);
 
         $this->assertInstanceOf(Entry::class, $entry);
+        $this->assertEquals(10, $product->quantity);
     }
 
     public function testCreateEntryThrowsProductNotFoundException()

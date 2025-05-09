@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Tests\TestCase;
 use App\Exceptions\InvalidDateRangeException;
 use App\Exceptions\Output\OutputNotFoundException;
@@ -33,56 +34,72 @@ class OutputServiceTest extends TestCase
             $this->outputRepositoryMock,
             $this->productRepositoryMock
         );
+
+        DB::shouldReceive('transaction')->andReturnUsing(function ($callback) {
+            return $callback();
+        });
     }
 
     public function testCreateOutputSuccessfully()
     {
-        $product = new Product(['id' => 1, 'quantity' => 10]);
         $data = ['product_id' => 1, 'quantity' => 5];
+        $product = Mockery::mock(Product::class)->makePartial();
+        $product->quantity = 10;
+
+        $product->shouldReceive('save')->once();
 
         $this->productRepositoryMock
             ->shouldReceive('findById')
-            ->with(1)
+            ->with($data['product_id'])
             ->andReturn($product);
 
         $this->outputRepositoryMock
             ->shouldReceive('create')
+            ->with(Mockery::on(function ($arg) use ($data) {
+                return $arg['product_id'] === $data['product_id'] &&
+                    $arg['quantity'] === $data['quantity'] &&
+                    isset($arg['output_date']);
+            }))
             ->andReturn(new Output($data));
 
-        DB::shouldReceive('transaction')
-            ->andReturnUsing(function ($callback) {
-                return $callback();
-            });
+        DB::shouldReceive('transaction')->andReturnUsing(function ($callback) {
+            return $callback();
+        });
 
         $output = $this->outputService->createOutput($data);
 
         $this->assertInstanceOf(Output::class, $output);
+        $this->assertEquals(5, $product->quantity);
     }
 
     public function testCreateOutputThrowsProductNotFoundException()
     {
         $this->expectException(ProductNotFoundException::class);
 
+        $data = ['product_id' => 1, 'quantity' => 5];
+
         $this->productRepositoryMock
             ->shouldReceive('findById')
-            ->with(1)
+            ->with($data['product_id'])
             ->andReturn(null);
 
-        $this->outputService->createOutput(['product_id' => 1, 'quantity' => 5]);
+        $this->outputService->createOutput($data);
     }
 
     public function testCreateOutputThrowsInsufficientStockException()
     {
         $this->expectException(InsufficientStockException::class);
 
-        $product = new Product(['id' => 1, 'quantity' => 2]);
+        $data = ['product_id' => 1, 'quantity' => 15];
+        $product = Mockery::mock(Product::class)->makePartial();
+        $product->quantity = 10;
 
         $this->productRepositoryMock
             ->shouldReceive('findById')
-            ->with(1)
+            ->with($data['product_id'])
             ->andReturn($product);
 
-        $this->outputService->createOutput(['product_id' => 1, 'quantity' => 5]);
+        $this->outputService->createOutput($data);
     }
 
     public function testGetAllOutputs()
@@ -96,6 +113,7 @@ class OutputServiceTest extends TestCase
         $result = $this->outputService->getAllOutputs();
 
         $this->assertCount(2, $result);
+        $this->assertInstanceOf(Collection::class, $result);
     }
 
     public function testGetOutputByIdSuccessfully()
@@ -136,6 +154,7 @@ class OutputServiceTest extends TestCase
         $result = $this->outputService->getOutputsByProductId('1');
 
         $this->assertCount(2, $result);
+        $this->assertInstanceOf(Collection::class, $result);
     }
 
     public function testGetOutputsByProductIdThrowsProductNotFoundException()
@@ -164,6 +183,7 @@ class OutputServiceTest extends TestCase
         $result = $this->outputService->getOutputsByDateRange($startDate, $endDate);
 
         $this->assertCount(2, $result);
+        $this->assertInstanceOf(Collection::class, $result);
     }
 
     public function testGetOutputsByDateRangeThrowsInvalidDateRangeException()

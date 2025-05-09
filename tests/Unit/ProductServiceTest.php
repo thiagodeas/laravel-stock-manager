@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Tests\TestCase;
 use App\Exceptions\Product\ProductAlreadyExistsException;
 use App\Exceptions\Product\ProductNotFoundException;
@@ -162,5 +163,11 @@ class ProductServiceTest extends TestCase
         $this->expectException(ProductNotFoundException::class);
 
         $this->productService->deleteProduct('1');
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 }

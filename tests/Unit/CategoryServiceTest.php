@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\Unit;
+
 use Tests\TestCase;
 use App\Services\Category\CategoryService;
 use App\Repositories\Category\CategoryRepositoryInterface;
