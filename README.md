@@ -49,4 +49,15 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ```
- Access the project http://localhost:8000/
+
+### Generate JWT secret
+
+Run the following command to generate the JWT secret key:
+
+```bash
+php artisan jwt:secret
+```
+
+This will add a JWT_SECRET key to your .env file, which is required for authentication.
+
+Access the project at [http://localhost:8000](http://localhost:8000).
