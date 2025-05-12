@@ -4,6 +4,19 @@
 
 This project is containerized with Docker to ensure easy setup and development. It includes all the dependencies needed to run the Laravel application.
 
+## 🛠️ Features
+
+- Manage products and categories.
+- Track stock entries and exits.
+- Generate detailed reports on stock movements.
+- Authentication using JWT.
+
+## 🐳 Docker Integration
+
+This project uses the Docker template from [especializati/setup-docker-laravel](https://github.com/thiagodeas/setup-docker-laravel), ensuring a streamlined development environment.
+
+---
+
 ## 🚀 Project Setup
 
 This project uses the Docker template from [especializati/setup-docker-laravel](https://github.com/thiagodeas/setup-docker-laravel) with Laravel 11 and PHP 8.3.
