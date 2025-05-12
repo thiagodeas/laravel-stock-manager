@@ -4,6 +4,7 @@ use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Entry\EntryController;
 use App\Http\Controllers\Output\OutputController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('categories')->group(function () {
@@ -37,4 +38,12 @@ Route::prefix('outputs')->group(function () {
     Route::get('/filter', [OutputController::class, 'getByDateRange']);
     Route::get('/{id}', [OutputController::class, 'getById']);
     Route::get('/product/{id}', [OutputController::class, 'getByProductId']);
+});
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('me', [AuthController::class, 'me']);
 });
