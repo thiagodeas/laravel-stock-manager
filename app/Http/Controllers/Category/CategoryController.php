@@ -7,6 +7,7 @@ use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\GetCategoryByNameRequest;
 use App\Services\Category\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryController extends Controller
 {
@@ -19,9 +20,14 @@ class CategoryController extends Controller
 
     public function create(CreateCategoryRequest $request): JsonResponse
     {
-        $product = $this->categoryService->createCategory($request->validated());
+        $user = JWTAuth::user(); 
+        if ($user->role !== 'admin') {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
 
-        return response()->json($product, 201);
+        $category = $this->categoryService->createCategory($request->validated());
+
+        return response()->json($category, 201);
     }
 
     public function getAll(): JsonResponse
