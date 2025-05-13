@@ -4,7 +4,7 @@ use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Entry\EntryController;
 use App\Http\Controllers\Output\OutputController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('categories')->group(function () {
