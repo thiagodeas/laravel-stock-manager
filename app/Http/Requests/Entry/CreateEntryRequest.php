@@ -5,6 +5,18 @@ namespace App\Http\Requests\Entry;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * @OA\Schema(
+ *     schema="CreateEntryRequest",
+ *     type="object",
+ *     required={"product_id", "quantity"},
+ *     properties={
+ *         @OA\Property(property="product_id", type="string", example="1"),
+ *         @OA\Property(property="quantity", type="integer", example=50)
+ *     }
+ * )
+ */
+
 class CreateEntryRequest extends FormRequest
 {
     public function authorize(): bool
