@@ -24,6 +24,15 @@
       margin:0;
       background: #fafafa;
     }
+
+    .swagger-ui .topbar .select-label {
+        display: none !important;
+    }
+
+    .swagger-ui .topbar .select-label,
+    .swagger-ui .filter {
+        display: none !important;
+    }
     </style>
     @if(config('l5-swagger.defaults.ui.display.dark_mode'))
         <style>
