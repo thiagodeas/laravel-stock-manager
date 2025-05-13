@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\Auth\ForbiddenException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use Tests\TestCase;
 use App\Services\Category\CategoryService;
 use App\Repositories\Category\CategoryRepositoryInterface;
@@ -10,6 +12,7 @@ use App\Exceptions\Category\CategoryAlreadyExistsException;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryServiceTest extends TestCase
 {
@@ -25,6 +28,9 @@ class CategoryServiceTest extends TestCase
 
     public function testCreateCategorySuccess()
     {
+        $authUser = (object) ['role' => 'admin'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
         $data = ['name' => 'Electronics'];
         $category = new Category($data);
 
@@ -46,6 +52,9 @@ class CategoryServiceTest extends TestCase
 
     public function testCreateCategoryThrowsExceptionWhenCategoryExists()
     {
+        $authUser = (object) ['role' => 'admin'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
         $data = ['name' => 'Electronics'];
         $existingCategory = new Category($data);
 
@@ -127,8 +136,70 @@ class CategoryServiceTest extends TestCase
         $this->categoryService->getCategoryByName('Electronics');
     }
 
+    public function testDeleteCategoryThrowsExceptionWhenNotFound()
+    {
+        $authUser = (object) ['role' => 'admin'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
+        $this->categoryRepositoryMock
+            ->shouldReceive('getById')
+            ->with('1')
+            ->andReturn(null);
+
+        $this->expectException(CategoryNotFoundException::class);
+
+        $this->categoryService->deleteCategory('1');
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
+    }
+
+    public function testCreateCategoryThrowsExceptionWhenUserNotAuthenticated()
+    {
+        JWTAuth::shouldReceive('user')->andReturn(null);
+
+        $this->expectException(TokenNotProvidedException::class);
+
+        $this->categoryService->createCategory(['name' => 'Electronics']);
+    }
+
+    public function testCreateCategoryThrowsExceptionWhenUserNotAdmin()
+    {
+        $authUser = (object) ['role' => 'user'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
+        $this->expectException(ForbiddenException::class);
+
+        $this->categoryService->createCategory(['name' => 'Electronics']);
+    }
+
+    public function testDeleteCategoryThrowsExceptionWhenUserNotAuthenticated()
+    {
+        JWTAuth::shouldReceive('user')->andReturn(null);
+
+        $this->expectException(TokenNotProvidedException::class);
+
+        $this->categoryService->deleteCategory('1');
+    }
+
+    public function testDeleteCategoryThrowsExceptionWhenUserNotAdmin()
+    {
+        $authUser = (object) ['role' => 'user'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
+        $this->expectException(ForbiddenException::class);
+
+        $this->categoryService->deleteCategory('1');
+    }
+
     public function testDeleteCategorySuccess()
     {
+        $authUser = (object) ['role' => 'admin'];
+        JWTAuth::shouldReceive('user')->andReturn($authUser);
+
         $category = new Category(['id' => '1', 'name' => 'Electronics']);
 
         $this->categoryRepositoryMock
@@ -144,23 +215,5 @@ class CategoryServiceTest extends TestCase
         $result = $this->categoryService->deleteCategory('1');
 
         $this->assertTrue($result);
-    }
-
-    public function testDeleteCategoryThrowsExceptionWhenNotFound()
-    {
-        $this->categoryRepositoryMock
-            ->shouldReceive('getById')
-            ->with('1')
-            ->andReturn(null);
-
-        $this->expectException(CategoryNotFoundException::class);
-
-        $this->categoryService->deleteCategory('1');
-    }
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
     }
 }
