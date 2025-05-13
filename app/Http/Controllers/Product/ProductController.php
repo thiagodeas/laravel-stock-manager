@@ -18,6 +18,21 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/products",
+     *     summary="Get all products",
+     *     tags={"Products"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all products",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Product")
+     *         )
+     *     )
+     * )
+     */
     public function getAll(): JsonResponse
     {
         $products = $this->productService->getAllProducts();
@@ -25,6 +40,22 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/products",
+     *     summary="Create a new product",
+     *     tags={"Products"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/CreateProductRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Product created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
+     */
     public function create(CreateProductRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -33,13 +64,51 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-    public function getById(string $id): JsonResponse 
+    /**
+     * @OA\Get(
+     *     path="/api/products/{id}",
+     *     summary="Get a product by ID",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the product",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product details",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
+     */
+    public function getById(string $id): JsonResponse
     {
         $product = $this->productService->findProductById($id);
 
         return response()->json($product);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/products/search",
+     *     summary="Search for a product by name",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=true,
+     *         description="Name of the product",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product details",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
+     */
     public function getByName(GetProductByNameRequest $request): JsonResponse
     {
         $name = $request->query('name');
@@ -48,6 +117,29 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/products/{id}",
+     *     summary="Update a product by ID",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the product",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateProductRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
+     */
     public function update(UpdateProductRequest $request, string $id): JsonResponse
     {
         $data = $request->validated();
@@ -56,6 +148,27 @@ class ProductController extends Controller
         return response()->json($updatedProduct);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/products/{id}",
+     *     summary="Delete a product by ID",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the product",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Product deleted successfully.")
+     *         )
+     *     )
+     * )
+     */
     public function delete(string $id): JsonResponse
     {
         $this->productService->deleteProduct($id);

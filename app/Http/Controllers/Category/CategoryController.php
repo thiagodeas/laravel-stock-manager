@@ -18,6 +18,30 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/categories",
+     *     summary="Create a new category",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/CreateCategoryRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Category created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Category")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden - User is not authorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Forbidden")
+     *         )
+     *     )
+     * )
+     */
     public function create(CreateCategoryRequest $request): JsonResponse
     {
         $user = JWTAuth::user(); 
@@ -30,6 +54,36 @@ class CategoryController extends Controller
         return response()->json($category, 201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/categories",
+     *     tags={"Categories"},
+     *     summary="Retrieve all categories",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of categories",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Category")
+     *         )
+     *     )
+     * )
+     */
+    /**
+     * @OA\Get(
+     *     path="/api/categories",
+     *     summary="Get all categories",
+     *     tags={"Categories"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all categories",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Category")
+     *         )
+     *     )
+     * )
+     */
     public function getAll(): JsonResponse
     {
         $categories = $this->categoryService->getAllCategories();
@@ -37,6 +91,25 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/categories/{id}",
+     *     summary="Get a category by ID",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the category",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category details",
+     *         @OA\JsonContent(ref="#/components/schemas/Category")
+     *     )
+     * )
+     */
     public function getById(string $id): JsonResponse
     {
         $category = $this->categoryService->getCategoryById($id);
@@ -44,6 +117,25 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/categories/search",
+     *     summary="Get a category by name",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=true,
+     *         description="Name of the category",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category details",
+     *         @OA\JsonContent(ref="#/components/schemas/Category")
+     *     )
+     * )
+     */
     public function getByName(GetCategoryByNameRequest $request): JsonResponse
     {
         $name = $request->query('name');
@@ -53,6 +145,25 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/categories/{id}",
+     *     summary="Delete a category by ID",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the category",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Category deleted successfully"
+     *     )
+     * )
+     */
     public function delete(string $id): JsonResponse
     {
         $category = $this->categoryService->deleteCategory($id);
