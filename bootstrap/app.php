@@ -1,7 +1,9 @@
 <?php
 
+use App\Exceptions\Auth\ForbiddenException;
 use App\Exceptions\Auth\InvalidCredentialsException;
 use App\Exceptions\Auth\LogoutFailedException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use App\Exceptions\Auth\UserAlreadyExistsException;
 use App\Exceptions\Auth\UserNotAuthenticatedException;
 use App\Exceptions\Category\CategoryNotFoundException;
@@ -102,6 +104,18 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->renderable(function (UserAlreadyExistsException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (TokenNotProvidedException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (ForbiddenException $e, $request) {
             return response()->json([
                 'error'=> $e->getMessage(),
             ], $e->getCode());

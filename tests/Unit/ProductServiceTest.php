@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\Auth\ForbiddenException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use Tests\TestCase;
 use App\Exceptions\Product\ProductAlreadyExistsException;
 use App\Exceptions\Product\ProductNotFoundException;
@@ -10,6 +12,7 @@ use App\Repositories\Product\ProductRepositoryInterface;
 use App\Services\Product\ProductService;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductServiceTest extends TestCase
 {
@@ -134,40 +137,69 @@ class ProductServiceTest extends TestCase
         $this->productService->updateProduct('1', $data);
     }
 
-    public function testDeleteProductSuccessfully()
-    {
-        $product = new Product(['id' => '1', 'name' => 'Test Product']);
-
-        $this->productRepositoryMock
-            ->shouldReceive('findById')
-            ->with('1')
-            ->andReturn($product);
-
-        $this->productRepositoryMock
-            ->shouldReceive('delete')
-            ->with('1')
-            ->andReturnNull();
-
-        $this->productService->deleteProduct('1');
-
-        $this->assertTrue(true); // If no exception is thrown, the test passes.
-    }
-
-    public function testDeleteProductThrowsExceptionIfNotFound()
-    {
-        $this->productRepositoryMock
-            ->shouldReceive('findById')
-            ->with('1')
-            ->andReturn(null);
-
-        $this->expectException(ProductNotFoundException::class);
-
-        $this->productService->deleteProduct('1');
-    }
-
     protected function tearDown(): void
     {
         Mockery::close();
         parent::tearDown();
+    }
+
+    public function testDeleteProductSuccessfully()
+    {
+    $authUser = (object) ['role' => 'admin'];
+    JWTAuth::shouldReceive('user')
+        ->andReturn($authUser);
+
+    $product = new Product(['id' => '1', 'name' => 'Test Product']);
+
+    $this->productRepositoryMock
+        ->shouldReceive('findById')
+        ->with('1')
+        ->andReturn($product);
+
+    $this->productRepositoryMock
+        ->shouldReceive('delete')
+        ->with('1')
+        ->andReturnNull();
+
+    $this->productService->deleteProduct('1');
+
+    $this->assertTrue(true); // If no exception is thrown, the test passes.
+    }
+
+    public function testDeleteProductThrowsTokenNotProvidedException()
+    {
+    JWTAuth::shouldReceive('user')
+        ->andReturn(null);
+
+    $this->expectException(TokenNotProvidedException::class);
+
+    $this->productService->deleteProduct('1');
+    }
+
+    public function testDeleteProductThrowsForbiddenExceptionForNonAdminUser()
+    {
+    $authUser = (object) ['role' => 'user'];
+    JWTAuth::shouldReceive('user')
+        ->andReturn($authUser);
+
+    $this->expectException(ForbiddenException::class);
+
+    $this->productService->deleteProduct('1');
+    }
+
+    public function testDeleteProductThrowsExceptionIfNotFound()
+    {
+    $authUser = (object) ['role' => 'admin'];
+    JWTAuth::shouldReceive('user')
+        ->andReturn($authUser);
+
+    $this->productRepositoryMock
+        ->shouldReceive('findById')
+        ->with('1')
+        ->andReturn(null);
+
+    $this->expectException(ProductNotFoundException::class);
+
+    $this->productService->deleteProduct('1');
     }
 }

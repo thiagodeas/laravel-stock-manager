@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use App\Exceptions\Auth\InvalidCredentialsException;
 use App\Exceptions\Auth\LogoutFailedException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use App\Exceptions\Auth\UserAlreadyExistsException;
 use App\Exceptions\Auth\UserNotAuthenticatedException;
 use App\Repositories\User\UserRepositoryInterface;
@@ -26,10 +27,9 @@ class AuthService
         if ($user) {
             throw new UserAlreadyExistsException();
         }
-
+        
         $data['password'] = Hash::make($data['password']);
         $data['role'] = 'user';
-        
         return $this->userRepository->create($data);
     }
 
@@ -45,7 +45,15 @@ class AuthService
     public function logout()
     {
         try {
-            JWTAuth::invalidate(JWTAuth::getToken());
+            $token = JWTAuth::getToken();
+
+            if (!$token) {
+                throw new TokenNotProvidedException();
+            }
+
+            JWTAuth::invalidate($token);
+        } catch (TokenNotProvidedException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new LogoutFailedException();
         }
@@ -54,7 +62,15 @@ class AuthService
     public function getAuthenticatedUser()
     {
         try {
-            return JWTAuth::user();
+            $authUser = JWTAuth::user();
+
+            if (!$authUser) {
+                throw new TokenNotProvidedException();
+            }
+
+            return $authUser;
+        } catch (TokenNotProvidedException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new UserNotAuthenticatedException();
         }

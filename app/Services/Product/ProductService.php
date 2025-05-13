@@ -2,12 +2,15 @@
 
 namespace App\Services\Product;
 
+use App\Exceptions\Auth\ForbiddenException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use App\Exceptions\Product\ProductAlreadyExistsException;
 use App\Exceptions\Product\ProductNotFoundException;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductService
 {
@@ -69,6 +72,16 @@ class ProductService
 
     public function deleteProduct(string $id): void 
     {
+        $authUser = JWTAuth::user(); 
+
+        if (!$authUser) {
+            throw new TokenNotProvidedException();
+        }
+
+        if ($authUser->role !== 'admin') {
+            throw new ForbiddenException();
+        }
+
         $product = $this->productRepository->findById($id);
 
         if(!$product) {

@@ -2,11 +2,14 @@
 
 namespace App\Services\Category;
 
+use App\Exceptions\Auth\ForbiddenException;
+use App\Exceptions\Auth\TokenNotProvidedException;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryAlreadyExistsException;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryService 
 {
@@ -19,6 +22,16 @@ class CategoryService
 
     public function createCategory(array $data): Category
     {
+        $authUser = JWTAuth::user(); 
+
+        if (!$authUser) {
+            throw new TokenNotProvidedException();
+        }
+
+        if ($authUser->role !== 'admin') {
+            throw new ForbiddenException();
+        }
+
         $existingCategory = $this->categoryRepository->getByName($data['name']);
 
         if($existingCategory) {
@@ -57,6 +70,16 @@ class CategoryService
 
     public function deleteCategory(string $id): bool
     {
+        $authUser = JWTAuth::user(); 
+
+        if (!$authUser) {
+            throw new TokenNotProvidedException();
+        }
+
+        if ($authUser->role !== 'admin') {
+            throw new ForbiddenException();
+        }
+
         $category = $this->categoryRepository->getById($id);
 
         if (!$category) {
