@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use App\Exceptions\Auth\InvalidCredentialsException;
 use App\Exceptions\Auth\LogoutFailedException;
+use App\Exceptions\Auth\UserAlreadyExistsException;
 use App\Exceptions\Auth\UserNotAuthenticatedException;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
@@ -20,8 +21,15 @@ class AuthService
 
     public function register(array $data)
     {
+        $user = $this->userRepository->findByEmail($data['email']);
+
+        if ($user) {
+            throw new UserAlreadyExistsException();
+        }
+
         $data['password'] = Hash::make($data['password']);
         $data['role'] = 'user';
+        
         return $this->userRepository->create($data);
     }
 

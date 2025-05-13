@@ -1,5 +1,9 @@
 <?php
 
+use App\Exceptions\Auth\InvalidCredentialsException;
+use App\Exceptions\Auth\LogoutFailedException;
+use App\Exceptions\Auth\UserAlreadyExistsException;
+use App\Exceptions\Auth\UserNotAuthenticatedException;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryAlreadyExistsException;
 use App\Exceptions\Entry\EntryNotFoundException;
@@ -12,7 +16,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -75,6 +78,30 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->renderable(function (OutputNotFoundException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (UserNotAuthenticatedException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (LogoutFailedException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (InvalidCredentialsException $e, $request) {
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ], $e->getCode());
+        });
+
+        $exceptions->renderable(function (UserAlreadyExistsException $e, $request) {
             return response()->json([
                 'error'=> $e->getMessage(),
             ], $e->getCode());
