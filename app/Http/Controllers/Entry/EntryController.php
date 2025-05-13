@@ -19,7 +19,7 @@ class EntryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/entries",
+     *     path="/entries",
      *     summary="Get all entries",
      *     tags={"Entries"},
      *     @OA\Response(
@@ -41,7 +41,7 @@ class EntryController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/entries",
+     *     path="/entries",
      *     summary="Create a new entry",
      *     tags={"Entries"},
      *     @OA\RequestBody(
@@ -65,7 +65,7 @@ class EntryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/entries/{id}",
+     *     path="/entries/{id}",
      *     summary="Get an entry by ID",
      *     tags={"Entries"},
      *     @OA\Parameter(
@@ -91,7 +91,7 @@ class EntryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/entries/product/{productId}",
+     *     path="/entries/product/{productId}",
      *     summary="Get entries by product ID",
      *     tags={"Entries"},
      *     @OA\Parameter(
@@ -120,7 +120,7 @@ class EntryController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/entries/date-range",
+     *     path="/entries/date-range",
      *     summary="Get entries by date range",
      *     tags={"Entries"},
      *     @OA\RequestBody(

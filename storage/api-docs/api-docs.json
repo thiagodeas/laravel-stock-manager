@@ -138,7 +138,7 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Logout the authenticated user",
+                "summary": "Logout the authenticated user (requires JWT token)",
                 "operationId": "0f6715df0d22b69c7e35bd32b4c1fc92",
                 "responses": {
                     "200": {
@@ -170,7 +170,7 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Get the authenticated user's information",
+                "summary": "Get the authenticated user's information (requires JWT token)",
                 "operationId": "37252cdc2ae05f1e2e4fd541e987489d",
                 "responses": {
                     "200": {
@@ -233,7 +233,7 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Create a new category",
+                "summary": "Create a new category (requires an admin role JWT token)",
                 "operationId": "59f9c6f67ca384c0beeaa03b2b79372b",
                 "requestBody": {
                     "required": true,
@@ -315,7 +315,7 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Delete a category by ID",
+                "summary": "Delete a category by ID (requires an admin role JWT token)",
                 "operationId": "fe6105644a2bbffcc47019d8c199d8b8",
                 "parameters": [
                     {
@@ -840,7 +840,7 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "Delete a product by ID",
+                "summary": "Delete a product by ID (requires an admin role JWT token)",
                 "operationId": "902fa113d8faf426bc5fe591b181ba42",
                 "parameters": [
                     {

@@ -19,7 +19,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/auth/register",
+     *     path="/auth/register",
      *     summary="Register a new user",
      *     tags={"Auth"},
      *     @OA\RequestBody(
@@ -28,8 +28,7 @@ class AuthController extends Controller
      *             required={"name", "email", "password", "password_confirmation"},
      *             @OA\Property(property="name", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123"),
-     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123")
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
      *         )
      *     ),
      *     @OA\Response(
@@ -54,7 +53,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/auth/login",
+     *     path="/auth/login",
      *     summary="Login a user",
      *     tags={"Auth"},
      *     @OA\RequestBody(
@@ -86,8 +85,8 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/auth/logout",
-     *     summary="Logout the authenticated user",
+     *     path="/auth/logout",
+     *     summary="Logout the authenticated user (requires JWT token)",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -107,8 +106,8 @@ class AuthController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/auth/me",
-     *     summary="Get the authenticated user's information",
+     *     path="/auth/me",
+     *     summary="Get the authenticated user's information (requires JWT token)",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(

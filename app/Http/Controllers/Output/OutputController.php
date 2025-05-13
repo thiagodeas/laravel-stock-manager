@@ -19,7 +19,7 @@ class OutputController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/outputs",
+     *     path="/outputs",
      *     summary="Get all outputs",
      *     tags={"Outputs"},
      *     @OA\Response(
@@ -41,7 +41,7 @@ class OutputController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/outputs",
+     *     path="/outputs",
      *     summary="Create a new output",
      *     tags={"Outputs"},
      *     @OA\RequestBody(
@@ -65,7 +65,7 @@ class OutputController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/outputs/{id}",
+     *     path="/outputs/{id}",
      *     summary="Get an output by ID",
      *     tags={"Outputs"},
      *     @OA\Parameter(
@@ -91,7 +91,7 @@ class OutputController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/outputs/product/{productId}",
+     *     path="/outputs/product/{productId}",
      *     summary="Get outputs by product ID",
      *     tags={"Outputs"},
      *     @OA\Parameter(
@@ -120,7 +120,7 @@ class OutputController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/outputs/date-range",
+     *     path="/outputs/date-range",
      *     summary="Get outputs by date range",
      *     tags={"Outputs"},
      *     @OA\RequestBody(

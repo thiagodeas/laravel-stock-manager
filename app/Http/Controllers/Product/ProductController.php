@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/products",
+     *     path="/products",
      *     summary="Get all products",
      *     tags={"Products"},
      *     @OA\Response(
@@ -42,7 +42,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/products",
+     *     path="/products",
      *     summary="Create a new product",
      *     tags={"Products"},
      *     @OA\RequestBody(
@@ -66,7 +66,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/products/{id}",
+     *     path="/products/{id}",
      *     summary="Get a product by ID",
      *     tags={"Products"},
      *     @OA\Parameter(
@@ -92,7 +92,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/products/search",
+     *     path="/products/search",
      *     summary="Search for a product by name",
      *     tags={"Products"},
      *     @OA\Parameter(
@@ -119,7 +119,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/products/{id}",
+     *     path="/products/{id}",
      *     summary="Update a product by ID",
      *     tags={"Products"},
      *     @OA\Parameter(
@@ -150,8 +150,8 @@ class ProductController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/products/{id}",
-     *     summary="Delete a product by ID",
+     *     path="/products/{id}",
+     *     summary="Delete a product by ID (requires an admin role JWT token)",
      *     tags={"Products"},
      *     @OA\Parameter(
      *         name="id",

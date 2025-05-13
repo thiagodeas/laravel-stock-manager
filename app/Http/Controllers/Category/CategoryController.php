@@ -7,7 +7,6 @@ use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\GetCategoryByNameRequest;
 use App\Services\Category\CategoryService;
 use Illuminate\Http\JsonResponse;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryController extends Controller
 {
@@ -20,8 +19,8 @@ class CategoryController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/categories",
-     *     summary="Create a new category",
+     *     path="/categories",
+     *     summary="Create a new category (requires an admin role JWT token)",
      *     tags={"Categories"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -44,11 +43,6 @@ class CategoryController extends Controller
      */
     public function create(CreateCategoryRequest $request): JsonResponse
     {
-        $user = JWTAuth::user(); 
-        if ($user->role !== 'admin') {
-            return response()->json(['error' => 'Forbidden'], 403);
-        }
-
         $category = $this->categoryService->createCategory($request->validated());
 
         return response()->json($category, 201);
@@ -71,7 +65,7 @@ class CategoryController extends Controller
      */
     /**
      * @OA\Get(
-     *     path="/api/categories",
+     *     path="/categories",
      *     summary="Get all categories",
      *     tags={"Categories"},
      *     @OA\Response(
@@ -93,7 +87,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/categories/{id}",
+     *     path="/categories/{id}",
      *     summary="Get a category by ID",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -119,7 +113,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/categories/search",
+     *     path="/categories/search",
      *     summary="Get a category by name",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -147,8 +141,8 @@ class CategoryController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/categories/{id}",
-     *     summary="Delete a category by ID",
+     *     path="/categories/{id}",
+     *     summary="Delete a category by ID (requires an admin role JWT token)",
      *     tags={"Categories"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
